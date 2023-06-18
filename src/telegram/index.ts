@@ -1,14 +1,17 @@
 import TelegramBot, { User } from 'node-telegram-bot-api';
 import {
   handleFailedCreate,
+  handleFailedLeaderboard,
+  handleFailedView,
   handleHelp,
+  handleInvalidCommand,
   handleInvalidSyntax,
   handleNoAccess,
   handleStart,
 } from './responses';
-import { createNewEntry } from '../services/leaderboard';
-import { createWhitelist } from './whitelist';
-import { Entry } from '../common/types';
+import { createWhitelist, viewWhiteList } from './whitelist';
+import { createCommand, leaderboardCommand, viewCommand } from './commands';
+import { validDays, validOg } from '../common/constants';
 
 export const startBot = (bot: TelegramBot) => {
   bot.on('message', async (msg) => {
@@ -25,7 +28,7 @@ export const startBot = (bot: TelegramBot) => {
         bot.sendMessage(chatId, handleStart, {
           parse_mode: 'Markdown',
           reply_markup: {
-            keyboard: [[{ text: '/help' }]],
+            keyboard: [[{ text: '/help' }], [{ text: '/leaderboard' }]],
           },
         });
         break;
@@ -48,37 +51,47 @@ const parseCommands = async (
     const words = textWithCommand.replace('/create', '').split('|');
     const isValid: boolean = createInputValidation(words);
     if (!isValid) return handleInvalidSyntax;
-    const trimmed = words.map((word) => word.trim());
     try {
-      let obj: Partial<Entry> = {};
-      const callbackFn = (createdObj: Entry) => {
-        obj = createdObj;
-      };
-      await createNewEntry(
-        {
-          inputterName: userInfo?.username ?? userInfo?.first_name ?? '-',
-          day: Number(trimmed[0]),
-          og: Number(trimmed[1]),
-          points: Number(trimmed[2]),
-          description: trimmed[3] ?? '-',
-        },
-        callbackFn
-      );
-      return `Success! Added ${obj.points} points to OG ${obj.og}`;
+      return await createCommand(words, userInfo);
     } catch {
       return handleFailedCreate;
     }
+  } else if (textWithCommand.startsWith('/view')) {
+    // add filtering options
+    if (!checkAccess(userInfo, viewWhiteList)) return handleNoAccess;
+    const word = textWithCommand.replace('/view', '').trim();
+    const isValid: boolean = viewInputValidation(word);
+    if (!isValid) return handleInvalidSyntax;
+    try {
+      return await viewCommand(word);
+    } catch {
+      return handleFailedView;
+    }
+  } else if (textWithCommand === '/leaderboard') {
+    try {
+      return await leaderboardCommand();
+    } catch {
+      return handleFailedLeaderboard;
+    }
   }
 
-  return 'Command not found';
+  return handleInvalidCommand;
 };
 
 const createInputValidation = (words: string[]): boolean => {
   if (words.length < 3 || words.length > 4) return false;
   const trimmed = words.map((word) => Number(word.trim()));
   const [day, og, points] = trimmed;
-  if (isNaN(day) || isNaN(og) || isNaN(points)) return false;
+  if (!validDays.includes(day) || !validOg.includes(og) || isNaN(points)) return false;
   return true;
+};
+
+const viewInputValidation = (word: string): boolean => {
+  if (word !== '' && !validDays.includes(Number(word))) {
+    return false;
+  } else {
+    return true;
+  }
 };
 
 const checkAccess = (userInfo: User | undefined, whitelist: string[]): boolean => {

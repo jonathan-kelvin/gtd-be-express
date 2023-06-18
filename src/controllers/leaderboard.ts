@@ -1,8 +1,23 @@
 import { RequestHandler } from 'express';
-import { createNewEntry, getAllEntries } from '../services/leaderboard';
+import { createNewEntry, getAllEntries, getLeaderboard } from '../services/leaderboard';
 
 export const getLeaderboardEntry: RequestHandler = async (req, res, next) => {
   try {
+    const scores = await getLeaderboard();
+    res.status(200).json({ message: 'success', data: scores });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// TODO add auth?
+export const createLeaderboardEntry: RequestHandler = async (req, res, next) => {
+  try {
+    // request body validation check
+    // replace .text with request body params
+    if (!req.body.text) {
+      res.status(400);
+    }
     // await createNewEntry(
     //   {
     //     inputterName: 'kelvin',
@@ -13,23 +28,6 @@ export const getLeaderboardEntry: RequestHandler = async (req, res, next) => {
     //   },
     //   () => console.log('⚡️[server]: New database entry created')
     // );
-
-    const scores = await getAllEntries();
-
-    res.status(200).json({ message: 'success 🤖', data: scores });
-  } catch (err) {
-    next(err);
-  }
-};
-
-export const createLeaderboardEntry: RequestHandler = async (req, res, next) => {
-  try {
-    // request body validation check
-    // replace .text with request body params
-    if (!req.body.text) {
-      // do something
-      res.status(400);
-    }
 
     res.status(200).json({ message: 'success 🤖' });
   } catch (err) {

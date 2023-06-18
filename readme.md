@@ -2,17 +2,25 @@ GTD XXV BE (leaderboard, telegram bot)
 npm run dev
 
 TODO
-- change og type
+
 - username whitelist
 - docs (swagger, readme)
-- refactor tele parse commands fn
 - dockerize for deployment
+- auth for create endpoint
+- /update /delete tele
+- update delete endpoints
+- delete all service
 
 IN PROGRESS
+
 - post request
-- get request
 - tele bot commands
 
 DONE
+
 - db connection
-- tele bot /start, /help, /create
+- get leaderboard endpoint
+- getEntries, createEntry, getLeaderboard services
+- tele bot /start, /help, /create, /view, /leaderboard
+- username whitelist
+- valid og and day validation

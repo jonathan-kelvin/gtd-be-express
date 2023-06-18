@@ -25,13 +25,25 @@ example: /create 1 | 8 | 100 | wreck it wralph og 2A vs 8B
 `;
 
 export const handleInvalidSyntax = `
-Command sent in incorrect format. Data not saved to database, try again
+Command sent in incorrect format. Try again
 `;
 
 export const handleFailedCreate = `
-Database failed to save.
+Database failed to save
+`;
+
+export const handleFailedView = `
+Database failed to get entries
+`;
+
+export const handleFailedLeaderboard = `
+Database failed to get entries
 `;
 
 export const handleNoAccess = `
 You do not have access to this command
+`;
+
+export const handleInvalidCommand = `
+Command not found
 `;

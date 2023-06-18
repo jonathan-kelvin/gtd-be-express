@@ -15,3 +15,10 @@ export type Entry = TelegramEntry & {
   createdAt?: Date;
   updatedAt?: Date;
 };
+
+export type LeaderboardData = {
+  og: number;
+  house: number;
+  [dayXPoints: string]: number;
+  totalPoints: number;
+};
