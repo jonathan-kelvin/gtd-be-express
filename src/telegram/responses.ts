@@ -7,9 +7,15 @@ This bot is used to keep track and update points in real time. Type /help for th
 
 export const handleHelp = `
 Commands available:
+*1. Leaderboard*
+_Public_
+Used to show current points of each OG (daily points are accumulated).
 
-*1. Create*
-_Used to add new entries to the database. Enter 1 OG at a time._
+/leaderboard
+
+*2. Create*
+_Private to POLOG only_ 
+Used to add new entries to the database. Enter 1 OG at a time.
 
 /create <day> | <og> | <point> | <desc>:
 day [[required]]: which gtd day is this for?
@@ -19,9 +25,15 @@ desc [[optional]]: description of entry
 
 example: /create 1 | 8 | 100 | wreck it wralph og 2A vs 8B
 
-*2. View*
+*3. View*
+_Private to POLOG only_
+Used to view all entries for specified day, if day is not specified,
+will show all entries available.
 
+/view <day>:
+day [[optional]]: show entries of this day only
 
+example /view 1
 `;
 
 export const handleInvalidSyntax = `

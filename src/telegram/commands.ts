@@ -7,12 +7,14 @@ import { User } from 'node-telegram-bot-api';
 export const leaderboardCommand = async (): Promise<string> => {
   let retStr = '*Leaderboard:*\n';
   const leaderboardData: LeaderboardData[] = await getLeaderboard();
+  let cnt = 1;
   for (const data of leaderboardData) {
-    let currStr = `OG ${data.og} - Total: ${data.totalPoints}`;
+    let currStr = `${cnt}. OG ${data.og} - Points: ${data.totalPoints}`;
     // Note: uncomment for day points
     // for (const day of validDays) {
     //   currStr += ` Day ${day}: ${data[`day${day}Points`]}`;
     // }
+    cnt += 1;
     retStr += currStr + '\n';
   }
   retStr += '\n_*check out pintugtd.com/leaderboard for more details!_';
