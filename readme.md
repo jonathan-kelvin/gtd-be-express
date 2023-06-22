@@ -24,3 +24,9 @@ DONE
 - tele bot /start, /help, /create, /view, /leaderboard
 - username whitelist
 - valid og and day validation
+
+FUTURE DEV:
+
+- better auth for endpoints
+- better request body validation
+- better routes
