@@ -2,6 +2,6 @@ import { Express } from 'express';
 import { createLeaderboardEntry, getLeaderboardEntry } from '../controllers/leaderboard';
 
 export default (app: Express) => {
-  app.get('/', getLeaderboardEntry);
-  app.post('/', createLeaderboardEntry);
+  app.get('/leaderboard', getLeaderboardEntry);
+  app.post('/leaderboard/entry', createLeaderboardEntry);
 };

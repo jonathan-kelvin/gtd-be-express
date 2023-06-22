@@ -16,10 +16,11 @@ const botToken = process.env.TELEGRAM_BOT_TOKEN || '';
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(errorHandler);
 
 // Routes
 leaderboard(app);
+
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running using port:${port}`);

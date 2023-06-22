@@ -1,19 +1,21 @@
 // Note: errors are not handled here
 
+import { validDays } from '../common/constants';
 import { Entry, LeaderboardData } from '../common/types';
 import { createNewEntry, getAllEntries, getLeaderboard } from '../services/leaderboard';
 import { User } from 'node-telegram-bot-api';
 
-export const leaderboardCommand = async (): Promise<string> => {
+export const leaderboardCommand = async (showDailyAttribution?: boolean): Promise<string> => {
   let retStr = '*Leaderboard:*\n';
   const leaderboardData: LeaderboardData[] = await getLeaderboard();
   let cnt = 1;
   for (const data of leaderboardData) {
     let currStr = `${cnt}. OG ${data.og} - Points: ${data.totalPoints}`;
-    // Note: uncomment for day points
-    // for (const day of validDays) {
-    //   currStr += ` Day ${day}: ${data[`day${day}Points`]}`;
-    // }
+    if (showDailyAttribution) {
+      for (const day of validDays) {
+        currStr += ` Day ${day}: ${data[`day${day}Points`]}`;
+      }
+    }
     cnt += 1;
     retStr += currStr + '\n';
   }
