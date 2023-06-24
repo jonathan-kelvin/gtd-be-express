@@ -23,7 +23,7 @@ b. Telegram Bot
 
 TODO
 
-- custom /help based on role
+- stress test (charCount and traffic)
 - docs (swagger, readme)
 - dockerize for deployment
 
@@ -34,6 +34,7 @@ DONE
 - valid og and day validation
 - CRUD api endpoints
 - tele bot commands
+- custom /help based on role
 
 FUTURE DEV:
 
@@ -42,4 +43,5 @@ FUTURE DEV:
 - better routes (use express.Route)
 - tele bot max message chars handling
 - better create/update tele bot prompts (inline keyboard / stateful app)
-- update tele command
+- /update tele command
+- make whitelist and /help more dynamic using mappings

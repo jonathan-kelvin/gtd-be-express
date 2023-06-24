@@ -10,6 +10,20 @@ import {
   getLeaderboard,
 } from '../services/leaderboard';
 import { User } from 'node-telegram-bot-api';
+import { maincommSet, masterSet, subcommSet } from './whitelist';
+import {
+  handleHelpAll,
+  handleHelpMaincomm,
+  handleHelpMaster,
+  handleHelpSubcomm,
+} from './responses';
+
+export const helpCommand = (username: string): string => {
+  if (masterSet.includes(username)) return handleHelpMaster;
+  if (maincommSet.includes(username)) return handleHelpMaincomm;
+  if (subcommSet.includes(username)) return handleHelpSubcomm;
+  return handleHelpAll;
+};
 
 export const leaderboardCommand = async (showDailyAttribution?: boolean): Promise<string> => {
   let retStr = '*Leaderboard:*\n';
@@ -47,7 +61,7 @@ export const viewMoreCommand = async (dayFilter: string): Promise<string> => {
   if (dayFilter) filter['day'] = Number(dayFilter);
   const rows: Entry[] = await getAllEntries(filter);
   for (const row of rows) {
-    const currStr = `- Id: ${row.id}, Day ${row.day}, OG ${row.og}, Points: ${row.points}, By: ${row.inputterName}, Desc: ${row.description}\n`;
+    const currStr = `- Id: ${row.id}, D${row.day}, OG${row.og}, Points ${row.points}, By ${row.inputterName}, Desc ${row.description}\n`;
     retStr += currStr;
   }
   return retStr;
@@ -66,9 +80,9 @@ export const createCommand = async (
     {
       inputterName: userInfo?.username ?? userInfo?.first_name ?? '-',
       day: Number(trimmed[0]),
-      og: Number(trimmed[1]),
-      points: Number(trimmed[2]),
-      description: trimmed[3] ?? '-',
+      og: Number(trimmed[2]),
+      points: Number(trimmed[3]),
+      description: trimmed[1],
     },
     callbackFn
   );

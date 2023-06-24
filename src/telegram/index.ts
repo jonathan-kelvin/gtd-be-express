@@ -4,7 +4,6 @@ import {
   handleFailedDelete,
   handleFailedLeaderboard,
   handleFailedView,
-  handleHelp,
   handleInvalidCommand,
   handleInvalidSyntax,
   handleNoAccess,
@@ -21,6 +20,7 @@ import {
   createCommand,
   deleteAllCommand,
   deleteCommand,
+  helpCommand,
   leaderboardCommand,
   viewCommand,
   viewMoreCommand,
@@ -47,7 +47,8 @@ export const startBot = (bot: TelegramBot) => {
         });
         break;
       case '/help':
-        bot.sendMessage(chatId, handleHelp, { parse_mode: 'Markdown' });
+        const helpReply = helpCommand(msg.from?.username ?? '');
+        bot.sendMessage(chatId, helpReply, { parse_mode: 'Markdown' });
         break;
       default:
         const sendText: string = await parseCommands(text, msg.from);
@@ -62,7 +63,7 @@ const parseCommands = async (
 ): Promise<string> => {
   if (textWithCommand.startsWith('/create')) {
     if (!checkAccess(userInfo, createWhitelist)) return handleNoAccess;
-    const words = textWithCommand.replace('/create', '').split('|');
+    const words = textWithCommand.replace('/create', '').split(':');
     const isValid: boolean = createInputValidation(words);
     if (!isValid) return handleInvalidSyntax;
     try {
@@ -117,10 +118,16 @@ const parseCommands = async (
 };
 
 const createInputValidation = (words: string[]): boolean => {
-  if (words.length < 3 || words.length > 4) return false;
-  const trimmed = words.map((word) => Number(word.trim()));
-  const [day, og, points] = trimmed;
-  if (!validDays.includes(day) || !validOg.includes(og) || isNaN(points)) return false;
+  if (words.length !== 4) return false;
+  const trimmed = words.map((word) => word.trim());
+  const [day, desc, og, points] = trimmed;
+  if (
+    !validDays.includes(Number(day)) ||
+    !validOg.includes(Number(og)) ||
+    isNaN(Number(points)) ||
+    !desc
+  )
+    return false;
   return true;
 };
 
