@@ -18,13 +18,20 @@ ${handleHelpAll}
 *2. Create*
 Used to add new entries to the database. Enter 1 OG at a time.
 
-/create <day> : <desc> : <og> : <point>:
+/create <day> (enter)
+<desc> (enter)
+<og> (enter)
+<point>:
 day: which gtd day is this for
 desc: description of entry
 og: which og is this for
 point: how many points did this og earn
 
-example: /create 1 : wir3 : 8 : 100
+example: 
+/create 1 
+wir3
+8
+100
 
 *3. View*
 Used to view all entries for specified day, if day is not specified,

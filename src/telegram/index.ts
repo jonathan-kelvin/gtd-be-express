@@ -63,7 +63,7 @@ const parseCommands = async (
 ): Promise<string> => {
   if (textWithCommand.startsWith('/create')) {
     if (!checkAccess(userInfo, createWhitelist)) return handleNoAccess;
-    const words = textWithCommand.replace('/create', '').split(':');
+    const words = textWithCommand.replace('/create', '').split(/\r?\n/);
     const isValid: boolean = createInputValidation(words);
     if (!isValid) return handleInvalidSyntax;
     try {
