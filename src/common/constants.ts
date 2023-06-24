@@ -5,3 +5,5 @@ export const ogInHouse4 = [7, 8];
 
 export const validDays = [1, 2, 3];
 export const validOg = [1, 2, 3, 4, 5, 6, 7, 8];
+
+export const TELE_CHAR_LIMIT = 4096;

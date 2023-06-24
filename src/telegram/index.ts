@@ -25,7 +25,7 @@ import {
   viewCommand,
   viewMoreCommand,
 } from './commands';
-import { validDays, validOg } from '../common/constants';
+import { TELE_CHAR_LIMIT, validDays, validOg } from '../common/constants';
 
 export const startBot = (bot: TelegramBot) => {
   bot.on('message', async (msg) => {
@@ -52,7 +52,11 @@ export const startBot = (bot: TelegramBot) => {
         break;
       default:
         const sendText: string = await parseCommands(text, msg.from);
-        bot.sendMessage(chatId, sendText, { parse_mode: 'Markdown' });
+        for (let i = 0; i < sendText.length; i += TELE_CHAR_LIMIT) {
+          bot.sendMessage(chatId, sendText.slice(i, i + TELE_CHAR_LIMIT), {
+            parse_mode: 'Markdown',
+          });
+        }
     }
   });
 };

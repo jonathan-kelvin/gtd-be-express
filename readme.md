@@ -23,7 +23,6 @@ b. Telegram Bot
 
 TODO
 
-- stress test (charCount and traffic)
 - docs (swagger, readme)
 - dockerize for deployment
 
@@ -35,6 +34,7 @@ DONE
 - CRUD api endpoints
 - tele bot commands
 - custom /help based on role
+- batch send tele msg when charCount > 4096
 
 FUTURE DEV:
 
