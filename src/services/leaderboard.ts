@@ -48,7 +48,6 @@ type GroupedDataQuery = {
  * @returns {Promise<LeaderboardData[]>} data sorted by total points in wide format
  */
 export const getLeaderboard = async (): Promise<LeaderboardData[]> => {
-  // add day selector??
   const data: GroupedDataQuery[] = await LeaderboardEntry.aggregate([
     {
       $group: {
@@ -88,4 +87,9 @@ export const getLeaderboard = async (): Promise<LeaderboardData[]> => {
   });
 
   return leaderboardData;
+};
+
+export const updateEntry = async (documentId: string, newEntry: Partial<Entry>) => {
+  const entry = await LeaderboardEntry.findByIdAndUpdate(documentId, newEntry, { new: true });
+  return entry;
 };

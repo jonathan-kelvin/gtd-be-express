@@ -9,8 +9,8 @@ import {
   handleNoAccess,
   handleStart,
 } from './responses';
-import { createWhitelist, viewWhiteList } from './whitelist';
-import { createCommand, leaderboardCommand, viewCommand } from './commands';
+import { createWhitelist, viewWhiteList, viewmoreWhiteList } from './whitelist';
+import { createCommand, leaderboardCommand, viewCommand, viewMoreCommand } from './commands';
 import { validDays, validOg } from '../common/constants';
 
 export const startBot = (bot: TelegramBot) => {
@@ -56,8 +56,7 @@ const parseCommands = async (
     } catch {
       return handleFailedCreate;
     }
-  } else if (textWithCommand.startsWith('/view')) {
-    // add filtering options
+  } else if (textWithCommand.startsWith('/view') && textWithCommand !== '/viewmore') {
     if (!checkAccess(userInfo, viewWhiteList)) return handleNoAccess;
     const word = textWithCommand.replace('/view', '').trim();
     const isValid: boolean = viewInputValidation(word);
@@ -72,6 +71,16 @@ const parseCommands = async (
       return await leaderboardCommand();
     } catch {
       return handleFailedLeaderboard;
+    }
+  } else if (textWithCommand === '/viewmore') {
+    if (!checkAccess(userInfo, viewmoreWhiteList)) return handleNoAccess;
+    const word = textWithCommand.replace('/viewmore', '').trim();
+    const isValid: boolean = viewInputValidation(word);
+    if (!isValid) return handleInvalidSyntax;
+    try {
+      return await viewMoreCommand(word);
+    } catch (err) {
+      return handleFailedView;
     }
   }
 

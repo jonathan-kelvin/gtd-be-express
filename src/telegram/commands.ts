@@ -29,7 +29,19 @@ export const viewCommand = async (dayFilter: string): Promise<string> => {
   if (dayFilter) filter['day'] = Number(dayFilter);
   const rows: Entry[] = await getAllEntries(filter);
   for (const row of rows) {
-    const currStr = `Day ${row.day}, House ${row.house}, OG ${row.og}, Points: ${row.points}, By: ${row.inputterName}, Desc: ${row.description}\n`;
+    const currStr = `- Day ${row.day}, House ${row.house}, OG ${row.og}, Points: ${row.points}, By: ${row.inputterName}, Desc: ${row.description}\n`;
+    retStr += currStr;
+  }
+  return retStr;
+};
+
+export const viewMoreCommand = async (dayFilter: string): Promise<string> => {
+  let retStr = '*Entries with Id:*\n';
+  let filter: Partial<Entry> = {};
+  if (dayFilter) filter['day'] = Number(dayFilter);
+  const rows: Entry[] = await getAllEntries(filter);
+  for (const row of rows) {
+    const currStr = `- Id: ${row.id}, Day ${row.day}, OG ${row.og}, Points: ${row.points}, By: ${row.inputterName}, Desc: ${row.description}\n`;
     retStr += currStr;
   }
   return retStr;
