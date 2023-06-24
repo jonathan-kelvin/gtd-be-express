@@ -52,6 +52,10 @@ export const handleFailedLeaderboard = `
 Database failed to get entries
 `;
 
+export const handleFailedDelete = `
+Database failed to delete entry
+`;
+
 export const handleNoAccess = `
 You do not have access to this command
 `;

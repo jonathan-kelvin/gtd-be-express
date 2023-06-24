@@ -1,7 +1,12 @@
+const master: string[] = [];
 const maincomm: string[] = [];
 const subcomm: string[] = [];
 
-export const createWhitelist = [...new Set(maincomm.concat(subcomm))];
-export const viewWhiteList = [...new Set(maincomm.concat(subcomm))];
-export const viewmoreWhiteList = [...new Set(maincomm)];
-export const updateWhiteList = [...new Set(maincomm)];
+const maincommSet: string[] = [...new Set(master.concat(maincomm))];
+const subcommSet: string[] = [...new Set(maincommSet.concat(subcomm))];
+
+export const createWhitelist = subcommSet;
+export const viewWhitelist = subcommSet;
+export const viewmoreWhitelist = maincommSet;
+export const deleteWhitelist = maincommSet;
+export const deleteAllWhitelist = master;

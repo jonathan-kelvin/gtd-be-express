@@ -1,6 +1,7 @@
 import { RequestHandler } from 'express';
 import {
   createNewEntry,
+  deleteEntry,
   getAllEntries,
   getLeaderboard,
   updateEntry,
@@ -82,6 +83,27 @@ export const updateLeaderboardEntry: RequestHandler = async (req, res, next) => 
       throw new Error('Id not found');
     }
     res.status(200).json({ message: 'Update success 🤖', data });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const deleteLeaderboardEntry: RequestHandler = async (req, res, next) => {
+  try {
+    if (req.body.password !== process.env.API_PASSWORD) {
+      res.status(401);
+      throw new Error('Incorrect password');
+    }
+    if (!req.params.id) {
+      res.status(400);
+      throw new Error('Incorrect params');
+    }
+    const data = await deleteEntry(req.params.id);
+    if (!data) {
+      res.status(400);
+      throw new Error('Id not found');
+    }
+    res.status(200).json({ message: 'Delete success 🤖', data });
   } catch (err) {
     next(err);
   }

@@ -90,6 +90,13 @@ export const getLeaderboard = async (): Promise<LeaderboardData[]> => {
 };
 
 export const updateEntry = async (documentId: string, newEntry: Partial<Entry>) => {
-  const entry = await LeaderboardEntry.findByIdAndUpdate(documentId, newEntry, { new: true });
-  return entry;
+  return await LeaderboardEntry.findByIdAndUpdate(documentId, newEntry, { new: true });
+};
+
+export const deleteEntry = async (documentId: string) => {
+  return await LeaderboardEntry.findByIdAndDelete(documentId);
+};
+
+export const deleteAllEntries = async (): Promise<number> => {
+  return (await LeaderboardEntry.deleteMany({})).deletedCount;
 };

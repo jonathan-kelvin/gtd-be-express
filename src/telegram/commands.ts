@@ -2,7 +2,13 @@
 
 import { validDays } from '../common/constants';
 import { Entry, LeaderboardData } from '../common/types';
-import { createNewEntry, getAllEntries, getLeaderboard } from '../services/leaderboard';
+import {
+  createNewEntry,
+  deleteAllEntries,
+  deleteEntry,
+  getAllEntries,
+  getLeaderboard,
+} from '../services/leaderboard';
 import { User } from 'node-telegram-bot-api';
 
 export const leaderboardCommand = async (showDailyAttribution?: boolean): Promise<string> => {
@@ -67,4 +73,15 @@ export const createCommand = async (
     callbackFn
   );
   return `Success! Added ${obj.points} points to OG ${obj.og}`;
+};
+
+export const deleteCommand = async (documentId: string): Promise<string> => {
+  const deletedEntry = await deleteEntry(documentId);
+  if (!deletedEntry) throw new Error();
+  return `Success! Entry deleted`;
+};
+
+export const deleteAllCommand = async (): Promise<string> => {
+  const rowsDeleted = await deleteAllEntries();
+  return `Success! ${rowsDeleted} entries deleted`;
 };

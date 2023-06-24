@@ -1,6 +1,7 @@
 import TelegramBot, { User } from 'node-telegram-bot-api';
 import {
   handleFailedCreate,
+  handleFailedDelete,
   handleFailedLeaderboard,
   handleFailedView,
   handleHelp,
@@ -9,8 +10,21 @@ import {
   handleNoAccess,
   handleStart,
 } from './responses';
-import { createWhitelist, viewWhiteList, viewmoreWhiteList } from './whitelist';
-import { createCommand, leaderboardCommand, viewCommand, viewMoreCommand } from './commands';
+import {
+  createWhitelist,
+  viewWhitelist,
+  viewmoreWhitelist,
+  deleteWhitelist,
+  deleteAllWhitelist,
+} from './whitelist';
+import {
+  createCommand,
+  deleteAllCommand,
+  deleteCommand,
+  leaderboardCommand,
+  viewCommand,
+  viewMoreCommand,
+} from './commands';
 import { validDays, validOg } from '../common/constants';
 
 export const startBot = (bot: TelegramBot) => {
@@ -57,7 +71,7 @@ const parseCommands = async (
       return handleFailedCreate;
     }
   } else if (textWithCommand.startsWith('/view') && textWithCommand !== '/viewmore') {
-    if (!checkAccess(userInfo, viewWhiteList)) return handleNoAccess;
+    if (!checkAccess(userInfo, viewWhitelist)) return handleNoAccess;
     const word = textWithCommand.replace('/view', '').trim();
     const isValid: boolean = viewInputValidation(word);
     if (!isValid) return handleInvalidSyntax;
@@ -73,7 +87,7 @@ const parseCommands = async (
       return handleFailedLeaderboard;
     }
   } else if (textWithCommand === '/viewmore') {
-    if (!checkAccess(userInfo, viewmoreWhiteList)) return handleNoAccess;
+    if (!checkAccess(userInfo, viewmoreWhitelist)) return handleNoAccess;
     const word = textWithCommand.replace('/viewmore', '').trim();
     const isValid: boolean = viewInputValidation(word);
     if (!isValid) return handleInvalidSyntax;
@@ -81,6 +95,21 @@ const parseCommands = async (
       return await viewMoreCommand(word);
     } catch (err) {
       return handleFailedView;
+    }
+  } else if (textWithCommand.startsWith('/delete') && textWithCommand !== '/deleteall') {
+    if (!checkAccess(userInfo, deleteWhitelist)) return handleNoAccess;
+    const word = textWithCommand.replace('/delete', '').trim();
+    try {
+      return await deleteCommand(word);
+    } catch {
+      return handleFailedDelete;
+    }
+  } else if (textWithCommand === '/deleteall') {
+    if (!checkAccess(userInfo, deleteAllWhitelist)) return handleNoAccess;
+    try {
+      return await deleteAllCommand();
+    } catch {
+      return handleFailedDelete;
     }
   }
 
