@@ -41,7 +41,6 @@ FUTURE DEV:
 - better auth for protected endpoints
 - better request body validation (express-validator or joi)
 - better routes (use express.Route)
-- tele bot max message chars handling
 - better create/update tele bot prompts (inline keyboard / stateful app)
 - /update tele command
 - make whitelist and /help more dynamic using mappings

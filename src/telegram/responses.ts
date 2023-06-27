@@ -19,11 +19,11 @@ ${handleHelpAll}
 Used to add new entries to the database. Enter 1 OG at a time.
 
 /create <day> (enter)
-<desc> (enter)
+<game> (enter)
 <og> (enter)
 <point>:
 day: which gtd day is this for
-desc: description of entry
+game: which game is this for
 og: which og is this for
 point: how many points did this og earn
 

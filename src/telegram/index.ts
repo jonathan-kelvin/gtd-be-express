@@ -75,7 +75,7 @@ const parseCommands = async (
     } catch {
       return handleFailedCreate;
     }
-  } else if (textWithCommand.startsWith('/view') && textWithCommand !== '/viewmore') {
+  } else if (textWithCommand.startsWith('/view') && !textWithCommand.startsWith('/viewmore')) {
     if (!checkAccess(userInfo, viewWhitelist)) return handleNoAccess;
     const word = textWithCommand.replace('/view', '').trim();
     const isValid: boolean = viewInputValidation(word);
@@ -91,7 +91,7 @@ const parseCommands = async (
     } catch {
       return handleFailedLeaderboard;
     }
-  } else if (textWithCommand === '/viewmore') {
+  } else if (textWithCommand.startsWith('/viewmore')) {
     if (!checkAccess(userInfo, viewmoreWhitelist)) return handleNoAccess;
     const word = textWithCommand.replace('/viewmore', '').trim();
     const isValid: boolean = viewInputValidation(word);
