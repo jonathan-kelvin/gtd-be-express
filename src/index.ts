@@ -1,5 +1,6 @@
 import express, { Express } from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import TelegramBot from 'node-telegram-bot-api';
 import leaderboard from './routes/leaderboard';
 import { connectDB } from './config/database';
@@ -14,6 +15,7 @@ const app: Express = express();
 const port = process.env.PORT || 8000;
 const botToken = process.env.TELEGRAM_BOT_TOKEN || '';
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
